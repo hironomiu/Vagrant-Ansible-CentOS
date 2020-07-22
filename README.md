@@ -13,6 +13,10 @@ CentOS8
 ```
 $ ansible-galaxy install lean_delivery.mysql -p provisioning/roles
 ```
+削除したい場合
+```
+$ ansible-galaxy remove lean_delivery.mysql -p provisioning/roles
+```
 
 ## 注意
 以下のエラーは無視して良い

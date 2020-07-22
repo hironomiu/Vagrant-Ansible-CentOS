@@ -1,0 +1,64 @@
+- name: my ansible start
+  hosts: vagrant
+  become: yes
+
+  pre_tasks:
+    - name: Install the MySQL repo
+      dnf:
+        name: https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+        state: installed
+      when: ansible_os_family == "RedHat"
+
+    - name: disable mysql module
+      shell: 'dnf -y module disable mysql'
+      when: ansible_os_family == "RedHat"
+
+  roles:
+    - role: lean_delivery.mysql
+  vars:
+    mysql_root_password: 88TEM-veDRE<888serd
+    mysql_user_home: root
+    mysql_databases:
+      - name: test
+        encoding: utf8mb4
+        collation: utf8mb4_general_ci
+    mysql_users:
+      - name: test_user
+        host: "%"
+        password: Sime32-SRRR-password
+        priv: "test.*:ALL"
+    mysql_port: 3306
+    mysql_bind_address: '0.0.0.0'
+    mysql_daemon: mysqld
+    mysql_version: 8.0
+    mysql_packages:
+      - mysql-server
+
+  tasks:
+  - name: install the epel rpm from a remote repo
+    dnf:
+      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      state: installed
+
+  - name: install the remi rpm from a remote repo
+    dnf:
+      name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm 
+      state: installed
+
+  - name: install the docker repo from a remote repo
+    shell: 'dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo'
+
+  - name: install the containerd.io rpm from a remote repo
+    dnf:
+      name: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.2-3.3.el7.x86_64.rpm
+      state: installed
+
+  - name: install git,docker,lsof
+    dnf: 
+      name:
+        - git
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - lsof
+      state: installed

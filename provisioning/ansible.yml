@@ -38,7 +38,11 @@
       name: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.2-3.3.el7.x86_64.rpm
       state: installed
 
-  - name: install git,docker,lsof
+  - name: enable nodejs v12
+    shell: 'dnf -y module enable nodejs:12'
+    when: ansible_os_family == "RedHat"
+
+  - name: install git,docker,lsof,nodejs
     dnf: 
       name:
         - git
@@ -46,4 +50,5 @@
         - docker-ce-cli
         - containerd.io
         - lsof
+        - nodejs
       state: installed

@@ -7,9 +7,10 @@ CentOS8
 - Git
 - Docker
 - MySQL
+- Nginx
 
 ## 事前準備
-[ansible-galaxy](https://galaxy.ansible.com/)にてlean_delivery.mysql,nginxinc.nginxのインストール
+[ansible-galaxy](https://galaxy.ansible.com/)にて[lean_delivery.mysql](https://galaxy.ansible.com/lean_delivery/mysql),[nginxinc.nginx](https://galaxy.ansible.com/nginxinc/nginx)のインストール
 ```
 $ ansible-galaxy install lean_delivery.mysql -p provisioning/roles
 $ ansible-galaxy install nginxinc.nginx -p provisioning/roles

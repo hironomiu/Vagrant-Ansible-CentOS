@@ -15,24 +15,9 @@
 
   roles:
     - role: lean_delivery.mysql
-  vars:
-    mysql_root_password: 88TEM-veDRE<888serd
-    mysql_user_home: root
-    mysql_databases:
-      - name: test
-        encoding: utf8mb4
-        collation: utf8mb4_general_ci
-    mysql_users:
-      - name: test_user
-        host: "%"
-        password: Sime32-SRRR-password
-        priv: "test.*:ALL"
-    mysql_port: 3306
-    mysql_bind_address: '0.0.0.0'
-    mysql_daemon: mysqld
-    mysql_version: 8.0
-    mysql_packages:
-      - mysql-server
+    - role: nginxinc.nginx 
+  vars_files:
+    - vars/main.yml
 
   tasks:
   - name: install the epel rpm from a remote repo

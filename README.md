@@ -9,13 +9,15 @@ CentOS8
 - MySQL
 
 ## 事前準備
-[ansible-galaxy](https://galaxy.ansible.com/)にてlean_delivery.mysqlのインストール
+[ansible-galaxy](https://galaxy.ansible.com/)にてlean_delivery.mysql,nginxinc.nginxのインストール
 ```
 $ ansible-galaxy install lean_delivery.mysql -p provisioning/roles
+$ ansible-galaxy install nginxinc.nginx -p provisioning/roles
 ```
 削除したい場合
 ```
 $ ansible-galaxy remove lean_delivery.mysql -p provisioning/roles
+$ ansible-galaxy remove nginxinc.nginx -p provisioning/roles
 ```
 
 ## 注意

@@ -1,0 +1,87 @@
+    nginx_http_template_enable: true
+    nginx_http_template:
+      app:
+        template_file: http/default.conf.j2
+        conf_file_name: default.conf
+        conf_file_location: /etc/nginx/conf.d/
+        servers:
+          server1:
+            listen:
+              listen_localhost:
+                ip: 0.0.0.0
+                port: 8080
+                opts:
+                  - default_server
+            server_name: localhost
+            http_error_pages:
+              404: /404.html
+            error_page: /usr/share/nginx/html
+            client_max_body_size: 512k
+            proxy_hide_headers:
+              - X-Powered-By
+            add_headers:
+              strict_transport_security:
+                name: Strict-Transport-Security
+                value: max-age=15768000; includeSubDomains
+                always: true
+            sub_filter:
+              # sub_filters: []
+              last_modified: "off"
+              once: "on"
+              types: "text/html"
+            reverse_proxy:
+              locations:
+                frontend:
+                  location: /
+                  proxy_hide_headers:
+                    - X-Powered-By
+                  add_headers:
+                    strict_transport_security:
+                      name: Strict-Transport-Security
+                      value: max-age=15768000; includeSubDomains
+                      always: true
+                    another_header:
+                      name: Fancy-New-Header-To-Test
+                      value: testing=true
+                      always: false
+                  proxy_pass: http://192.168.56.19:3000/
+                  proxy_cache_valid:
+                    - code: 200
+                      time: 10m
+                    - code: 301
+                      time: 1m
+                  proxy_cache_lock: false
+                  proxy_cache_min_uses: 3
+                  proxy_cache_revalidate: false
+                  proxy_cache_use_stale:
+                    - http_403
+                    - http_404
+                  proxy_ignore_headers:
+                    - Vary
+                    - Cache-Control
+                  proxy_redirect: false
+                  proxy_set_header:
+                    header_host:
+                      name: Host
+                      value: $host
+                    header_x_real_ip:
+                      name: X-Real-IP
+                      value: $remote_addr
+                    header_x_forwarded_for:
+                      name: X-Forwarded-For
+                      value: $proxy_add_x_forwarded_for
+                    header_x_forwarded_proto:
+                      name: X-Forwarded-Proto
+                      value: $scheme
+                  proxy_buffering: false
+                  client_max_body_size: 5m
+                  sub_filter:
+                    # sub_filters: []
+                    last_modified: "off"
+                    once: "on"
+                    types: "text/html"
+            returns:
+              return301:
+                location: ^~ /old-path
+                code: 301
+                value: http://$host/new-path

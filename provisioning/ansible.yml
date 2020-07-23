@@ -13,11 +13,19 @@
       shell: 'dnf -y module disable mysql'
       when: ansible_os_family == "RedHat"
 
+    - name: set locale
+      shell: localectl set-locale LANG=ja_JP.utf8
+
+    - name: set timezone to Asia/Tokyo
+      timezone:
+        name: Asia/Tokyo
+
   roles:
     - role: lean_delivery.mysql
     - role: nginxinc.nginx 
   vars_files:
     - vars/main.yml
+    - vars/nginx.yml
 
   tasks:
   - name: install the epel rpm from a remote repo
@@ -52,3 +60,10 @@
         - lsof
         - nodejs
       state: installed
+  - name:  copy .virc
+    copy:
+      src: ./files/.virc
+      dest: /home/vagrant/
+      owner: vagrant
+      group: vagrant
+      mode: 0600

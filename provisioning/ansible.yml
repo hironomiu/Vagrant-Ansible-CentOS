@@ -59,6 +59,7 @@
         - containerd.io
         - lsof
         - nodejs
+        - make
       state: installed
   - name:  copy .virc
     copy:
@@ -67,3 +68,10 @@
       owner: vagrant
       group: vagrant
       mode: 0600
+  - name: Disable SELinux
+    selinux:
+      state: disabled
+    register: result
+  - name: Reboot
+    reboot:
+    when: result.reboot_required
